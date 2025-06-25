@@ -1,13 +1,33 @@
 ---
 title: "Enggano Impact Questionnaires Results"
 author: "Gede Primahadi W. Rajeg, Charlotte Hemmings, Engga Zakaria Sangian"
-format: 
+format:
+  pdf:
+    message: false
+    toc: true
+    warning: false
+    fig-width: 6
+    fig-asp: 0.618
+    fig-dpi: 300
+    fig-align: "center"
+    number-sections: true
+    fig-pos: "H"
+    echo: false
+    geometry:
+      - top=1in
+      - left=1in
+      - right=1in
+      - bottom=1in
+    
   html:
     code-fold: true
     code-block-border-left: "#31BAE9"
     code-block-bg: "#F8F9F9"
     message: false
+    toc: true
+    number-sections: true
     warning: false
+    smooth-scroll: true
     fig-width: 6
     fig-asp: 0.618
     fig-dpi: 300
@@ -17,7 +37,7 @@ date: 2025-06-23
 date-modified: now
 ---
 
-## Preface
+# Preface
 
 This is a Quarto report for the results of the Enggano Impact Questionnaires collected in Enggano Island by Engga Zakaria Sangian.
 
@@ -33,7 +53,7 @@ source("pre-processing.R") # all loading the tidyverse
 
 ## Metadata Question No. 4
 
-It asks whether respondents are (i) teachers (in elementary school \[*SD*\], junior high school \[*SMP*\], or senior high school \[*SMA*\], or (ii) non-teachers (*BUKAN GURU*). Numbers in brackets are raw counts.
+It asks whether respondents are (i) teachers (in elementary school \[*SD*\], junior high school \[*SMP*\], or senior high school \[*SMA*\], or (ii) non-teachers (*BUKAN GURU*) (see @fig-q1). Numbers in brackets are raw counts.
 
 ```{r}
 #| label: fig-q1
@@ -67,12 +87,14 @@ q1_count |>
             vjust = 1.5,
             size = 3) +
   theme_bw() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 8))
 ```
+
+# Questions about Textbooks
 
 ## Main Question no. 1
 
-This question asks whether the Enggano language has ever been taught in class before the publication of the textbooks for Junior High and Elementary School.
+This question asks whether the Enggano language has ever been taught in class before the publication of the textbooks for Junior High and Elementary School (@fig-q5)
 
 ```{r}
 #| label: fig-q5
@@ -95,7 +117,8 @@ ggplot(q5, aes(x = mengajar2, y = n, fill = response)) +
   theme_bw() +
   theme(legend.position = "top",
         axis.text.x = element_text(angle = 45,
-                                   hjust = 1)) +
+                                   hjust = 1,
+                                   size = 8)) +
   scale_y_continuous(limits = c(0, 14), breaks = c(2, 6, 10, 14), minor_breaks = NULL) +
   labs(x = NULL,
        y = "frequency",
@@ -104,7 +127,7 @@ ggplot(q5, aes(x = mengajar2, y = n, fill = response)) +
 
 ## Main Question no. 2
 
-The question asked whether the Enggano language subject is compulsory in the curriculum today. This question could also be interpreted by the respondents as Enggano should be a formally/regulated compulsory subject. There is an information that the local/district level government instructs for the teaching of the language at school but that has not been formalised as a written regulation.
+The question asked whether the Enggano language subject is compulsory in the curriculum today (@fig-q6) This question could also be interpreted by the respondents as Enggano should be a formally/regulated compulsory subject. There is an information that the local/district level government instructs for the teaching of the language at school but that has not been formalised as a written regulation.
 
 ```{r}
 #| label: fig-q6
@@ -127,7 +150,8 @@ ggplot(q6, aes(x = mengajar2, y = n, fill = response)) +
   facet_wrap(~mengajar3, scales = "free_x") +
   theme(legend.position = "top",
         axis.text.x = element_text(angle = 45,
-                                   hjust = 1)) +
+                                   hjust = 1,
+                                   size = 8)) +
   scale_y_continuous(limits = c(0, 12), breaks = c(2, 6, 10, 14), 
                      minor_breaks = NULL) +
   labs(x = NULL,
@@ -138,7 +162,7 @@ ggplot(q6, aes(x = mengajar2, y = n, fill = response)) +
 
 ## Main Question no. 3 {#sec-q3}
 
-We ask whether the textbooks for each school level (Junior High and Elementary levels) have ever been used in class since we released them in January 2025. We ask respondents to be honest if the books have never been used.
+We ask whether the textbooks for each school level (Junior High and Elementary levels) have ever been used in class since we released them in January 2025. We ask respondents to be honest if the books have never been used (see @fig-q7)
 
 ```{r}
 #| label: fig-q7
@@ -161,7 +185,8 @@ ggplot(q7, aes(x = mengajar2, y = n, fill = response)) +
   facet_wrap(~mengajar3, scales = "free_x") +
   theme(legend.position = "top",
         axis.text.x = element_text(angle = 45,
-                                   hjust = 1)) +
+                                   hjust = 1,
+                                   size = 8)) +
   scale_y_continuous(limits = c(0, 12), breaks = c(2, 6, 10, 14), 
                      minor_breaks = NULL) +
   labs(x = NULL,
@@ -221,7 +246,7 @@ to be worked on... as this is an open comments
 
 ## Main Question no. 6 {#sec-q6}
 
-When in @sec-q3 the respondents answered "Yes" that they have used the textbooks in their classes, we asked them to rate (on the 5-point scale) how difficult it would be for the teacher to teach the material in the textbooks. The interpretation is the same, point 1 is very difficult and point 5 is very easy.
+When in @sec-q3 the respondents answered "Yes" that they have used the textbooks in their classes, we asked them to rate (on the 5-point scale) how difficult it would be for the teacher to teach the material in the textbooks. The interpretation is the same, point 1 is very difficult and point 5 is very easy (see @fig-q9).
 
 ```{r}
 #| fig.width: 9
@@ -291,7 +316,8 @@ q10 |>
   facet_wrap(~mengajar3, scales = "free_x") +
   theme(legend.position = "top",
         axis.text.x = element_text(angle = 45,
-                                   hjust = 1)) +
+                                   hjust = 1,
+                                   size = 8)) +
   scale_y_continuous(limits = c(0, 18), breaks = c(2, 6, 10, 14, 18), 
                      minor_breaks = NULL) +
   labs(x = NULL,
@@ -301,7 +327,7 @@ q10 |>
 
 ## Main Question no. 8 {#sec-q11}
 
-This question is a follow-up for the question in @sec-q10. It asks respondents to multi-choose from a pre-determined list, with an option to add "others", which parts they find difficult to teach.
+This question is a follow-up for the question in @sec-q10. It asks respondents to multi-choose from a pre-determined list, with an option to add "others", which parts they find difficult to teach (@fig-q11).
 
 ```{r}
 #| fig-asp: 0.85
@@ -315,10 +341,10 @@ q11 <- quiz_chr |>
   count(mengajar2, mengajar3, response)
 q11_resp <- tribble(~main_cat, ~response, ~english,
                     TRUE, "berbicara/pelafalan bahasa Enggano", "speaking/pronunciation",
-                    TRUE, "kosakata bahasa Enggano", "Vocabulary",
-                    TRUE, "membaca bahasa Enggano", "Reading",
-                    TRUE, "menulis bahasa Enggano", "Writing/orthography",
-                    TRUE,"tatabahasa bahasa Enggano", "Grammar",
+                    TRUE, "kosakata bahasa Enggano", "vocabulary",
+                    TRUE, "membaca bahasa Enggano", "reading",
+                    TRUE, "menulis bahasa Enggano", "writing/orthography",
+                    TRUE,"tatabahasa bahasa Enggano", "grammar",
                     FALSE, "Untuk penulisan tanda baca dan pembaca memang masih harus di singkronkan antra para pengajar agar mudah memaparkan dan mengajarkan pada para siswa", "We still need to syncronise the understanding of the readers with the orthography/spelling. That way, it would be easier between teachers to explain and teach the orthography to the students.")
 q11 <- left_join(q11, q11_resp, by = join_by("response")) |> 
   mutate(main_cat = replace(main_cat, is.na(main_cat), TRUE)) |> 
@@ -334,7 +360,9 @@ q11 |>
             size = 2.25, fontface = "bold") +
   theme_bw() +
   facet_wrap(~mengajar3, scales = "free_y") +
-  theme(legend.position = "top") +
+  theme(legend.position = "top",
+        legend.text = element_text(size = 8),
+        axis.text.y = element_text(size = 8)) +
   scale_y_continuous(limits = c(0, 18), breaks = c(2, 6, 10, 14, 18), 
                      minor_breaks = NULL) +
   coord_flip() +
@@ -349,3 +377,11 @@ There is one respondent choosing "others" and providing a comment regarding orth
 > Indonesian: "*Untuk penulisan tanda baca dan pembaca memang masih harus di singkronkan antra para pengajar agar mudah memaparkan dan mengajarkan pada para siswa*"
 >
 > English: "We still need to syncronise the understanding of the readers with the orthography/spelling. That way, it would be easier between teachers to explain and teach the orthography to the students."
+
+## Main Question no. 9
+
+If in question 7 (@sec-q10) you answered ‘Yes’, there are certain difficult parts of the textbook to teach, please provide comments regarding solutions that you can think of to reduce these difficulties.
+
+... TO DO ...
+
+# Questions for Digital and Print Dictionaries
