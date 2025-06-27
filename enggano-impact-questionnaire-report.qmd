@@ -385,3 +385,332 @@ If in question 7 (@sec-q10) you answered ‘Yes’, there are certain difficult 
 ... TO DO ...
 
 # Questions for Digital and Print Dictionaries
+
+## Main Question no. 10 {#sec-q13}
+
+This question asks whether the Digital Enggano Language Dictionary and the printed Enggano language dictionary been used in classroom learning. We invite the respondents to be honest if they have not used them. The results are shown in @fig-q13.
+
+```{r}
+#| fig-asp: 0.85
+#| fig-width: 7
+#| label: fig-q13
+#| fig-cap: "Responses for Question no. 10"
+
+q13 <- quiz_chr |> 
+  filter(str_detect(question, "^13\\.")) |> 
+  count(mengajar2, mengajar3, response) |> 
+  mutate(perc = round(n/sum(n) * 100, 1)) |> 
+  mutate(response_english = response) |> 
+  mutate(response_english = replace(response_english,
+                                    response_english == "Belum pernah kedua-duanya",
+                                    "never for both"),
+         response_english = replace(response_english,
+                                    response_english == "Ya, sudah pernah Kamus Cetak saja",
+                                    "yes, print only"),
+         response_english = replace(response_english,
+                                    response_english == "Ya, sudah pernah Kamus Digital saja",
+                                    "yes, digital only"))
+
+q13 |> 
+  ggplot(aes(x = mengajar2, y = n, fill = response_english)) +
+  geom_col(position = "dodge") +
+  geom_text(aes(label = str_c(perc, "% (", n, ")", sep = "")),
+            position = position_dodge(.9),
+            hjust = ifelse(q13$perc >= 20, 1.5, -0.15),
+            size = 2.25, fontface = "bold") +
+  theme_bw() +
+  coord_flip() +
+  facet_wrap(~mengajar3, scales = "free_y") +
+  theme(legend.position = "top",
+        legend.text = element_text(size = 8),
+        axis.text.y = element_text(size = 8)) +
+  labs(x = NULL,
+       y = "frequency",
+       fill = "response",
+       caption = "Have the two versions of the dictionary been used in class?")
+```
+
+## Main Question no. 11
+
+When in @sec-q13 the respondents answered “never” used both the printed and digital/online dictionaries, but have seen the contents, we asked them to give an impression about how difficult it seems to use each dictionary. The interpretation is the same, point 1 is very difficult and point 5 is very easy (see @fig-q14).
+
+```{r}
+#| fig-asp: 0.75
+#| fig-width: 9
+#| label: fig-q14
+#| fig-cap: "Responses for Question no. 11"
+
+q14 <- quiz_dbl |> 
+  filter(str_detect(question, "^14")) |> 
+  mutate(response = factor(response),
+         response = factor(response, levels = c("1", levels(response)))) |> 
+  select(mengajar2, 
+         mengajar3, 
+         `How difficult it seems to use the two dictionaries?` = response)
+
+q14_count <- q14 |> 
+  group_by(mengajar2) |> 
+  filter(!is.na(`How difficult it seems to use the two dictionaries?`)) |> 
+  count(`How difficult it seems to use the two dictionaries?`) |> 
+  mutate(perc = round(n/sum(n)*100, 1)) |> 
+  rename(quest = `How difficult it seems to use the two dictionaries?`)
+
+q14_resp <- as.data.frame(q14[,3])
+q14_resp_lik <- likert::likert(q14_resp, grouping = q14$mengajar2, nlevels = )
+plot(q14_resp_lik, include.histogram = TRUE, include.center = TRUE,
+     plot.percents = TRUE)
+
+```
+
+The raw count for @fig-q14 is shown in @tbl-q14. Note that the `senior high school teacher` responses are only from `{r} pull(tally(filter(q14_count, mengajar2 == "senior high school teacher"), n), n)` respondents in total.
+
+```{r}
+#| tbl-cap: "Counts of the rating in Question 11"
+#| label: tbl-q14
+#| warning: false
+#| message: false
+
+q14_count |> 
+  rename(group = mengajar2,
+         rating_scale = quest,
+         no_of_voter = n,
+         percentage = perc) |> 
+  knitr::kable()
+```
+
+## Main Question no. 12 {#sec-q15}
+
+In this question, we asked how difficult it is for teachers to use the **Digital** dictionary in the classroom via a 5-point likert scale. This question is relevant especially if respondents answered "yes" in @sec-q13 (i.e., yes, having used the Digital dictionary only or together with the Print one). The interpretation is the same, point 1 is very difficult and point 5 is very easy (see @fig-q15). The raw counts are shown in @tbl-q15.
+
+```{r}
+#| fig-asp: 0.75
+#| fig-width: 9
+#| label: fig-q15
+#| fig-cap: "Responses for Question no. 12"
+
+q15 <- quiz_dbl |> 
+  filter(str_detect(question, "^15")) |> 
+  mutate(response = factor(response),
+         response = factor(response, levels = c("1", levels(response)))) |> 
+  select(mengajar2, 
+         mengajar3, 
+         `How difficult it is to use the Digital dictionary?` = response)
+
+q15_count <- q15 |> 
+  group_by(mengajar2) |> 
+  filter(!is.na(`How difficult it is to use the Digital dictionary?`)) |> 
+  count(`How difficult it is to use the Digital dictionary?`) |> 
+  mutate(perc = round(n/sum(n)*100, 1)) |> 
+  rename(quest = `How difficult it is to use the Digital dictionary?`)
+
+q15_resp <- as.data.frame(q15[,3])
+q15_resp_lik <- likert::likert(q15_resp, grouping = q15$mengajar2, nlevels = )
+plot(q15_resp_lik, include.histogram = TRUE, include.center = TRUE,
+     plot.percents = TRUE)
+```
+
+```{r}
+#| tbl-cap: "Counts of the rating in Question 12"
+#| label: tbl-q15
+#| warning: false
+#| message: false
+
+q15_count |> 
+  rename(group = mengajar2,
+         rating_scale = quest,
+         no_of_voter = n,
+         percentage = perc) |> 
+  knitr::kable()
+```
+
+## Main Question no. 13 {#sec-q16}
+
+In this question, we asked how difficult it is for teachers to use the **Print** dictionary in the classroom via a 5-point likert scale. This question is relevant especially if respondents answered "yes" in @sec-q13 (i.e., yes, having used the Print dictionary only or together with the Print one). The interpretation is the same, point 1 is very difficult and point 5 is very easy (see @fig-q16). The raw counts are shown in @tbl-q16.
+
+```{r}
+#| fig-asp: 0.75
+#| fig-width: 9
+#| label: fig-q16
+#| fig-cap: "Responses for Question no. 13"
+
+q16 <- quiz_dbl |> 
+  filter(str_detect(question, "^16")) |> 
+  mutate(response = factor(response),
+         response = factor(response, levels = c("1", levels(response)))) |> 
+  select(mengajar2, 
+         mengajar3, 
+         `How difficult it is to use the Print dictionary?` = response)
+
+q16_count <- q16 |> 
+  group_by(mengajar2) |> 
+  filter(!is.na(`How difficult it is to use the Print dictionary?`)) |> 
+  count(`How difficult it is to use the Print dictionary?`) |> 
+  mutate(perc = round(n/sum(n)*100, 1)) |> 
+  rename(quest = `How difficult it is to use the Print dictionary?`)
+
+q16_resp <- as.data.frame(q16[,3])
+q16_resp_lik <- likert::likert(q16_resp, grouping = q16$mengajar2, nlevels = )
+plot(q16_resp_lik, include.histogram = TRUE, include.center = TRUE,
+     plot.percents = TRUE)
+```
+
+```{r}
+#| tbl-cap: "Counts of the rating in Question 13"
+#| label: tbl-q16
+#| warning: false
+#| message: false
+
+q16_count |> 
+  rename(group = mengajar2,
+         rating_scale = quest,
+         no_of_voter = n,
+         percentage = perc) |> 
+  knitr::kable()
+```
+
+## Main Question no. 14 {#sec-q17}
+
+As the question in @sec-q11, in this question we ask whether there are any aspects/parts of the **Digital** dictionary that users find difficult (esp. if they have seen and used it). One participant can choose more than one option. The results are shown in @fig-q17.
+
+```{r}
+#| fig-width: 9
+#| label: fig-q17
+#| fig-cap: "Responses for Question no. 14"
+
+q17 <- quiz_chr |> 
+  filter(str_detect(question, "^17")) |> 
+  mutate(response = str_replace_all(response, 
+                                    "Baru tau ketika Engga, datang ke Enggano.",
+                                    "Baru tau ketika Engga datang ke Enggano.")) |> 
+   mutate(response = str_split(response, ", ")) |> 
+  unnest_longer(response) |> 
+  count(mengajar2, mengajar3, response)
+q17_resp <- tribble(~main_cat, ~response, ~english,
+                    TRUE, "Pemilihan bahasa awal untuk memulai pencarian kata", "choosing the search language",
+                    TRUE, "Pengetikan huruf dengan simbol-simbol khusus", "typing special characters/orthography",
+                    TRUE, "Pencarian kata", "word search",
+                    TRUE, "Pemahaman isi/informasi dari hasil pencarian kata", "understanding output of the search result",
+                    FALSE, "Baru tau ketika Engga datang ke Enggano.", "Just knew it when Engga came to Enggano.")
+q17 <- left_join(q17, q17_resp, by = join_by("response")) |> 
+  mutate(main_cat = replace(main_cat, is.na(main_cat), TRUE)) |> 
+  filter(main_cat) |> 
+  mutate(perc = round(n/sum(n)*100, 1))
+
+q17 |> 
+  ggplot(aes(x = mengajar2, y = n, fill = english)) +
+  geom_col(position = "dodge") +
+  geom_text(aes(label = str_c(perc, "% (", n, ")", sep = "")),
+            position = position_dodge(.9),
+            hjust = -0.15,
+            size = 2.25, fontface = "bold") +
+  theme_bw() +
+  facet_wrap(~mengajar3, scales = "free_y") +
+  theme(legend.text = element_text(size = 8),
+        axis.text.y = element_text(size = 8)) +
+  scale_y_continuous(limits = c(0, 18), breaks = c(2, 6, 10, 14, 18), 
+                     minor_breaks = NULL) +
+  coord_flip() +
+  labs(x = NULL,
+       y = "frequency",
+       fill = "response",
+       caption = "Which parts of the Digital dictionary are difficult?")
+```
+
+One respondent chose "others", and saying that (s)he just knew about the dictionary because Engga came again to Enggano in June.
+
+## Main Question no. 15 {#sec-q18}
+
+Following on the question in @sec-q17, in this question we ask whether there are any aspects/parts of the **Print** dictionary that users find difficult (esp. if they have seen and used it). One participant can choose more than one option. The results are shown in @fig-q18.
+
+```{r}
+#| fig-width: 9
+#| label: fig-q18
+#| fig-cap: "Responses for Question no. 15"
+
+q18 <- quiz_chr |> 
+  filter(str_detect(question, "^18")) |> 
+   mutate(response = str_split(response, ", ")) |> 
+  unnest_longer(response) |> 
+  count(mengajar2, mengajar3, response)
+q18_resp <- tribble(~main_cat, ~response, ~english,
+                    TRUE, "Pelafalan huruf-huruf dengan simbol khusus", "pronouncing words with special orthography",
+                    TRUE, "Penelusuran kata di bahasa Enggano", "word search in Enggano",
+                    TRUE, "Penelusuran kata di bahasa Indonesia", "word finder via Indonesian",
+                    TRUE, "Struktur informasi yang ditampilkan untuk suatu kata", "information inside a word entry",
+                    FALSE, "Perbanyak kamus cetak", "Please make more copies of the dictionary")
+q18 <- left_join(q18, q18_resp, by = join_by("response")) |> 
+  mutate(main_cat = replace(main_cat, is.na(main_cat), TRUE)) |> 
+  filter(main_cat) |> 
+  mutate(perc = round(n/sum(n)*100, 1))
+
+q18 |> 
+  ggplot(aes(x = mengajar2, y = n, fill = english)) +
+  geom_col(position = "dodge") +
+  geom_text(aes(label = str_c(perc, "% (", n, ")", sep = "")),
+            position = position_dodge(.9),
+            hjust = -0.15,
+            size = 2.25, fontface = "bold") +
+  theme_bw() +
+  facet_wrap(~mengajar3, scales = "free_y") +
+  theme(legend.text = element_text(size = 8),
+        axis.text.y = element_text(size = 8)) +
+  scale_y_continuous(limits = c(0, 18), breaks = c(2, 6, 10, 14, 18), 
+                     minor_breaks = NULL) +
+  coord_flip() +
+  labs(x = NULL,
+       y = "frequency",
+       fill = "response",
+       caption = "Which parts of the Print dictionary are difficult?")
+```
+
+One respondent requested to print more copies of the dictionary.
+
+## Main Question no. 16 {#sec-q19}
+
+### Context
+
+In January 2025, during the delivery of research results (textbooks and printed dictionaries), the Enggano language research team did not have the opportunity to conduct workshops/training on the use of textbooks and further introduction to dictionaries (due to weather + transportation constraints and return tickets that had already been booked). We will prepare a video tutorial related to the material in question (here is [the one for the Digital dictionary](https://youtube.com/playlist?list=PLN_hyg71EM-fyuz8v_jw9xmp9krG4ijHw&si=85LzQC9uRqhoisjS)). We would like to get input regarding what needs to be emphasised in the tutorial through the following questions.
+
+### The question
+
+To maximise the use/understanding of the materials in the **Textbooks** and the **Digital & Print** dictionaries in the classroom, what would teachers/communities most like to learn more through tutorials from the Enggano language research team? The respondents can choose more than one option.
+
+```{r}
+#| fig-width: 9
+#| label: fig-q19
+#| fig-cap: "Responses for Question no. 16"
+
+q19 <- quiz_chr |> 
+  filter(str_detect(question, "^19")) |> 
+   mutate(response = str_split(response, ", ")) |> 
+  unnest_longer(response) |> 
+  count(mengajar2, mengajar3, response)
+q19_resp <- tribble(~main_cat, ~response, ~english,
+                    TRUE, "Tata tulis/Ejaan/Ortografi Bahasa Enggano", "Enggano orthography",
+                    TRUE, "Praktik penggunaan buku ajar yang disusun dalam “Rencana Pelaksanaan Pembelajaran” (RPP)", "practice in using the Textbooks laid out in a “Lesson Plan”",
+                    TRUE, "Menelusuri kata dalam kamus", "searching words in the Dictionaries",
+                    TRUE, "Tatabahasa Bahasa Enggano", "Enggano grammar")
+q19 <- left_join(q19, q19_resp, by = join_by("response")) |> 
+  mutate(main_cat = replace(main_cat, is.na(main_cat), TRUE)) |> 
+  filter(main_cat) |> 
+  mutate(perc = round(n/sum(n)*100, 1))
+
+q19 |> 
+  ggplot(aes(x = mengajar2, y = n, fill = english)) +
+  geom_col(position = "dodge") +
+  geom_text(aes(label = str_c(perc, "% (", n, ")", sep = "")),
+            position = position_dodge(.9),
+            hjust = -0.15,
+            size = 2.25, fontface = "bold") +
+  theme_bw() +
+  facet_wrap(~mengajar3, scales = "free_y") +
+  theme(legend.text = element_text(size = 8),
+        axis.text.y = element_text(size = 8)) +
+  scale_y_continuous(limits = c(0, 18), breaks = c(2, 6, 10, 14, 18), 
+                     minor_breaks = NULL) +
+  coord_flip() +
+  labs(x = NULL,
+       y = "frequency",
+       fill = "response",
+       caption = "Aspects to be learnt further by the community via tutorials")
+```
