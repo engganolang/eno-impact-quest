@@ -1,0 +1,36 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: >-
+  R codes for processing the questionnaires of the Enggano
+  Impact project
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Gede Primahadi Wijaya
+    family-names: Rajeg
+    email: primahadi_wijaya@unud.ac.id
+    affiliation: Udayana University & University of Oxford
+    orcid: 'https://orcid.org/0000-0002-2047-8621'
+repository-code: 'https://github.com/engganolang/eno-impact-quest'
+abstract: >-
+  A repository of R codes to process the questionnaire
+  report as part of the "Increasing Impact for Enggano"
+  follow-up grant funded by the Impact Division of the
+  University of Oxford.
+keywords:
+  - Enggano
+  - Bahasa Enggano
+  - University of Oxford
+  - Enggano Impact
+  - Endangered Language
+  - Austronesian
+  - Austronesian Language
+  - Barrier Islands Languages
+  - Indonesian Languages
+license: CC-BY-NC-SA-4.0
+version: 1.0.0
+date-released: '2025-06-23'
