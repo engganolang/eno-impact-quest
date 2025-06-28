@@ -1,7 +1,79 @@
 ---
 title: "Enggano Impact Questionnaires Results"
-author: "Gede Primahadi W. Rajeg, Charlotte Hemmings, Engga Zakaria Sangian"
+author: 
+  - id: first
+    number: 1
+    name:
+      given: Gede Primahadi Wijaya
+      family: Rajeg
+    orcid: 0000-0002-2047-8621
+    affiliations:
+      - ref: unud
+      - ref: cirhss
+  - id: second
+    number: 2
+    name:
+      given: Charlotte
+      family: Hemmings
+    orcid: 0000-0002-3076-5544
+    affiliations:
+      - ref: oxford
+  - id: third
+    number: 3
+    name:
+      given: Engga Zakaria
+      family: Sangian
+    orcid: 0009-0000-8802-6819
+    affiliations:
+      - ref: cirhss
+  - id: fourth
+    number: 4
+    name:
+      given: Dendi
+      family: Wijaya
+    orcid: 0000-0002-8767-9364
+    affiliations:
+      - ref: brin
+  - id: fifth
+    number: 5
+    name:
+      given: I Wayan
+      family: Arka
+    orcid: 0000-0002-2819-6186
+    affiliations:
+      - ref: anu
+      - ref: cirhss
+  - id: sixth
+    number: 6
+    name:
+      given: Mary
+      family: Dalrymple
+    orcid: 0000-0001-5723-5722
+    affiliations:
+      - ref: oxford
+affiliations:
+  - id: unud
+    name: Universitas Udayana
+  - id: cirhss
+    name: Centre for Interdisciplinary Research on the Humanities and Social Sciences, Univ. Udayana
+  - id: oxford
+    name: University of Oxford
+  - id: brin
+    name: National Research and Innovation Agency
+  - id: anu
+    name: Australian National University
 format:
+  docx:
+    toc: true
+    toc-depth: 3
+    warning: false
+    message: false
+    fig-width: 6
+    fig-asp: 0.618
+    fig-dpi: 300
+    fig-align: "center"
+    number-sections: true
+    echo: false
   pdf:
     message: false
     toc: true
@@ -39,7 +111,7 @@ date-modified: now
 
 # Preface
 
-This is a Quarto report for the results of the Enggano Impact Questionnaires collected in Enggano Island by Engga Zakaria Sangian.
+This is a [Quarto](https://quarto.org/ "Quarto Webpage"){target="_blank"}-generated report for the results of the Enggano Impact Questionnaires, which were collected in the Enggano Island by Engga Zakaria Sangian between June 6 and June 13, 2025.
 
 ```{r setup}
 #| message: false
@@ -57,7 +129,7 @@ It asks whether respondents are (i) teachers (in elementary school \[*SD*\], jun
 
 ```{r}
 #| label: fig-q1
-#| fig-cap: "Distribution of Teachers vs. Non-Teachers for Metada Question no. 4"
+#| fig-cap: "Distribution of Teachers vs. Non-Teachers for Metadata Question no. 4"
 
 q1 <- quiz |> 
   select(mengajar = `4. Mengajar di tingkat?`) |> 
@@ -90,6 +162,8 @@ q1_count |>
   theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 8))
 ```
 
+Note that there is one respondent who indicates that (s)he teaches at both elementary and junior high schools. For this respondent, h(is/er) responses are counted twice in order to represent each level of school (s)he teaches. This is the reason why the sum of the raw counts in @fig-q1 is `{r} sum(q1_count$n)` instead of `{r} nrow(quiz)`, which is the number of people asked for answering the questionnaires.
+
 # Questions about Textbooks
 
 ## Main Question no. 1
@@ -99,6 +173,7 @@ This question asks whether the Enggano language has ever been taught in class be
 ```{r}
 #| label: fig-q5
 #| fig-cap: "Responses for Question no. 1"
+#| fig-asp: 0.75
 
 q5 <- quiz_chr |> 
   filter(str_detect(question, "^5")) |> 
@@ -132,6 +207,7 @@ The question asked whether the Enggano language subject is compulsory in the cur
 ```{r}
 #| label: fig-q6
 #| fig-cap: "Responses for Question no. 2"
+#| fig-asp: 0.75
 
 q6 <- quiz_chr |> 
   filter(str_detect(question, "^6")) |> 
@@ -167,6 +243,7 @@ We ask whether the textbooks for each school level (Junior High and Elementary l
 ```{r}
 #| label: fig-q7
 #| fig-cap: "Responses for Question no. 3"
+#| fig-asp: 0.75
 
 q7 <- quiz_chr |> 
   filter(str_detect(question, "^7")) |> 
@@ -194,7 +271,7 @@ ggplot(q7, aes(x = mengajar2, y = n, fill = response)) +
        caption = "Have the produced textbooks been used in classroom teaching?")
 ```
 
-## Main Question no. 4
+## Main Question no. 4 {#sec-q8}
 
 When in @sec-q3 the respondents answered "**Never (used the textbook in class)**", or when they are not teachers, but have seen the contents of the book, we asked them to give an impression of how difficult it seems to use the primary and/or junior high school book, on the 5-point Likert scale. The point 1 means 'very difficult' up to point 5 'very easy'. We can interpret the point 3 as intermediate/neutral impression. Below, we also provide an example of interpreting this Likert-scale bar plots (see @fig-q8) generated using the R package `likert` and `grid`, which can be useful for other same kind of plots.
 
@@ -224,7 +301,7 @@ plot(q8_resp_lik, include.histogram = TRUE, include.center = TRUE,
      plot.percents = TRUE)
 ```
 
-The right panel shows the number of missing (non-answered) responses (maroon) and of completed responses. The left panel shows the distribution of the Likert responses by respondents. Here is an example to interpret the left graph. Take the `non-teacher` response. The `{r} round(q8_resp_lik$results[q8_resp_lik$results$Group == "non-teacher", "2"])`% on the left indicates the cumulative proportion of respondents choosing point 2. So, for this group of respondents, the textbooks appear to be difficult to use, because there are only `{r} round(q8_resp_lik$results[q8_resp_lik$results$Group == "non-teacher", "5"])`% responses capturing point 5 ('very easy'). On the contrary, for the `elementary school teacher`, the impression is reverse whereby cumulatively (up to `{r} round(sum(q8_resp_lik$results[q8_resp_lik$results$Group == "elementary school teacher", c("4", "5")]))`%), this group perceives the textbooks to be relatively easy to use (because selecting points 4 and 5). @tbl-q8 provides the raw counts for @fig-q8.
+The right panel shows the number of missing (non-answered) responses (maroon) and of completed responses. The left panel shows the distribution of the Likert responses by respondents. Here is an example to interpret the left graph. Take the `non-teacher` response. The `{r} round(q8_resp_lik$results[q8_resp_lik$results$Group == "non-teacher", "2"])`% on the left indicates the cumulative proportion of respondents choosing point 2. So, for this group of respondents, the textbooks appear to be difficult to use, because there are only `{r} round(q8_resp_lik$results[q8_resp_lik$results$Group == "non-teacher", "5"])`% responses capturing point 5 ('very easy'). On the contrary, for the `elementary school teacher`, the impression is reverse whereby cumulatively (up to `{r} round(sum(q8_resp_lik$results[q8_resp_lik$results$Group == "elementary school teacher", c("4", "5")]))`%), this group perceives the textbooks to be relatively easy to use (because selecting points 4 and 5). @tbl-q8 provides the raw counts for @fig-q8. The values inside the `percentage` column is calculated by the `group` column.
 
 ```{r}
 #| tbl-cap: "Counts of the rating in Question 4"
@@ -242,7 +319,27 @@ q8_count |>
 
 ## Main Question no. 5
 
-to be worked on... as this is an open comments
+In relation to the previous question (i.e., Main Question no. 4 in @sec-q8), are there any other suggestions/comments you would like to make regarding the primary and junior high school textbooks? The responses are shown in @tbl-q8a .
+
+```{r}
+#| message: false
+#| warning: false
+#| tbl-colwidths: [20, 40, 40]
+#| tbl-cap: "Responses for Main Question no. 5"
+#| label: tbl-q8a
+
+
+q8a <- read_tsv("q8-trans-to-edit.tsv")
+q8a |> 
+  mutate(mengajar3 = factor(mengajar3, levels = c("teachers", "non-teachers")),
+         mengajar2 = factor(mengajar2, levels = c("elementary school teacher",
+                                                  "junior high school teacher",
+                                                  "senior high school teacher",
+                                                  "non-teacher"))) |> 
+  arrange(mengajar3, mengajar2) |> 
+  select(`Respondent` = mengajar2, Indonesian = response, English = resp_trans_edit) |> 
+  knitr::kable()
+```
 
 ## Main Question no. 6 {#sec-q6}
 
@@ -297,6 +394,7 @@ This is a leading, Boolean (yes-no) question about any difficult parts of the te
 ```{r}
 #| label: fig-q10
 #| fig-cap: "Responses for Question no. 7"
+#| fig-asp: 0.75
 
 q10 <- quiz_chr |> 
   filter(str_detect(question, "^10")) |> 
@@ -380,15 +478,33 @@ There is one respondent choosing "others" and providing a comment regarding orth
 
 ## Main Question no. 9
 
-If in question 7 (@sec-q10) you answered ‘Yes’, there are certain difficult parts of the textbook to teach, please provide comments regarding solutions that you can think of to reduce these difficulties.
+If in the Main Question no. 7 (@sec-q10) you answered ‘Yes’ that there are certain difficult parts of the textbook to teach, please provide comments regarding solutions that you can think of to reduce these difficulties.
 
-... TO DO ...
+```{r}
+#| message: false
+#| warning: false
+#| tbl-colwidths: [20, 40, 40]
+#| tbl-cap: "Responses for Main Question no. 9"
+#| label: tbl-q12
+
+
+q12 <- read_tsv("q12-trans-to-edit.tsv")
+q12 |> 
+  mutate(mengajar3 = factor(mengajar3, levels = c("teachers", "non-teachers")),
+         mengajar2 = factor(mengajar2, levels = c("elementary school teacher",
+                                                  "junior high school teacher",
+                                                  "senior high school teacher",
+                                                  "non-teacher"))) |> 
+  arrange(mengajar3, mengajar2) |> 
+  select(`Respondent` = mengajar2, Indonesian = response, English = resp_trans_edit) |> 
+  knitr::kable()
+```
 
 # Questions for Digital and Print Dictionaries
 
 ## Main Question no. 10 {#sec-q13}
 
-This question asks whether the Digital Enggano Language Dictionary and the printed Enggano language dictionary been used in classroom learning. We invite the respondents to be honest if they have not used them. The results are shown in @fig-q13.
+This question asks whether the Digital Enggano Language Dictionary and the printed Enggano language dictionary have ever been used in the classroom. We invite the respondents to be honest if they have not used them. The results are shown in @fig-q13.
 
 ```{r}
 #| fig-asp: 0.85
@@ -665,6 +781,8 @@ q18 |>
 
 One respondent requested to print more copies of the dictionary.
 
+# Future aspiration for maximising the textbooks and dictionaries
+
 ## Main Question no. 16 {#sec-q19}
 
 ### Context
@@ -713,4 +831,34 @@ q19 |>
        y = "frequency",
        fill = "response",
        caption = "Aspects to be learnt further by the community via tutorials")
+```
+
+## Other open comments
+
+```{r}
+q20 <- quiz_chr |> 
+  filter(str_detect(question, "^20"))
+q20_na <- filter(q20, is.na(response))
+```
+
+The question: "Is there anything else that the community needs regarding textbooks and dictionaries? Please write it in the blank space below".
+
+```{r}
+#| message: false
+#| warning: false
+#| tbl-colwidths: [20, 40, 40]
+#| tbl-cap: "Responses for the \"Open Comments\""
+#| label: tbl-q20
+
+
+q20 <- read_tsv("q20-trans-to-edit.tsv")
+q20 |> 
+  mutate(mengajar3 = factor(mengajar3, levels = c("teachers", "non-teachers")),
+         mengajar2 = factor(mengajar2, levels = c("elementary school teacher",
+                                                  "junior high school teacher",
+                                                  "senior high school teacher",
+                                                  "non-teacher"))) |> 
+  arrange(mengajar3, mengajar2) |> 
+  select(`Respondent` = mengajar2, Indonesian = response, English = resp_trans_edit) |> 
+  knitr::kable()
 ```
