@@ -43,14 +43,6 @@ author:
     affiliations:
       - ref: anu
       - ref: cirhss
-  - id: sixth
-    number: 6
-    name:
-      given: Mary
-      family: Dalrymple
-    orcid: 0000-0001-5723-5722
-    affiliations:
-      - ref: oxford
 affiliations:
   - id: unud
     name: Universitas Udayana
